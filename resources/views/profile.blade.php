@@ -14,10 +14,9 @@
         <link href="{{asset('regchileasset/css/brands.css')}}" rel="stylesheet">
         <link href="{{asset('regchileasset/css/plugins.css')}}" rel="stylesheet">
         <link href="{{asset('regchileasset/css/register.css')}}" rel="stylesheet" type="text/css" />
-        <link href="{{asset('regchileasset/css/select2.min.css')}}" rel="stylesheet" type="text/css">
-        <link href="{{asset('regchileasset/plugins/sweetalerts/sweetalert2.min.css" rel="stylesheet')}}" type="text/css" />
         <link href="{{asset('regchileasset/plugins/sweetalerts/sweetalert.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('regchileasset/css/ui-kit/custom-sweetalert.css')}}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <style>
             .row [class*="col-"] .widget .widget-header h4 { color: green; }
             input[type=number]::-webkit-inner-spin-button, 
@@ -37,7 +36,7 @@
             <div class="row">
                 <div class="col-md-12 text-center mb-4">
                     <img alt="logo" src="https://nikkenlatam.com/oficina-virtual/assets/images/general/logo-header-black.png" class="theme-logo">
-                    <img alt="logo" src="{{asset('regchileasset/img/' . $flag )}}" width="5%">
+                    <img alt="logo" src="{{asset('regchileasset/img/chile.png')}}" width="5%">
                 </div>
                 <br>
                 <div class="row layout-spacing col-md-12">
@@ -49,16 +48,16 @@
                         </ol>
                     </div>
                 </div>
-                <div class="alert alert-danger col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
                     {{ __('auth.alert') }}
                 </div>
-                <div class="alert alert-danger col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
                     {{ __('auth.rquired') }}
                 </div>
-                <div class="alert alert-danger col-md-12 text-justify" role="alert" id="confirmationAltert" style="display: none">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="confirmationAltert" style="display: none">
                     {{ __('auth.alertConfirmation') }} <br><br> {{ __('auth.alertConfirmation2') }}
                 </div>
-                <form id="formProfile" class="form-control" border="none" method="POST">
+                <form id="formProfile" class="form-control" border="none" method="get">
                     <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                     <div class="col-lg-12">
                         <div class="statbox widget box box-shadow">
@@ -99,7 +98,7 @@
                                         <input type="text" id="celPhone" name="celPhone" class="form-control" maxlength="10">
                                     </div>
                                     <div class="form-goup col-md-12">
-                                        <label for="phone"><span style="color: red !important;">*</span> <b>{{ __('auth.phone') }}</b></label>
+                                        <label for="phone"><span style="color: red !important;"></span> <b>{{ __('auth.phone') }}</b></label>
                                         <input type="text" id="phone" name="phone" class="form-control" maxlength="10">
                                     </div>
                                     <div class="form-goup col-md-12">
@@ -117,7 +116,7 @@
                                     <label>{{ __('auth.warning')}}</label>
                                 </div>
                                 <div class="form-goup col-md-12">
-                                    <label for="sponsorId"><span style="color: red !important;">*</span> <b>{{ __('auth.sponsorCode') }}</b></label>
+                                    <label for="sponsorId"><span style="color: red !important;"></span> <b>{{ __('auth.sponsorCode') }}</b></label>
                                     <input type="text" id="sponsorId" name="sponsorId" class="form-control" readonly>
                                 </div>
                                 <div class="form-goup col-md-12">
@@ -125,12 +124,7 @@
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <label for="superSearch"><span style="color: red !important;">*</span> <b>{{ __('auth.searchName') }}</b></label>
-                                    <select class="form-control basic" name="superSearch" id="superSearch">
-                                        <option value="" selected disabled>&nbsp;</option>
-                                        @foreach ($response as $data)
-                                            <option value="{{ $data->associateid.' - '.$data->AssociateName }}">{{ $data->associateid . ' - ' . $data->AssociateName }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()">
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <br><br>
@@ -160,6 +154,8 @@
                                 <input type="hidden" id="rquired" value="{{ __('auth.rquired') }}" readonly>
                                 <input type="hidden" id="texteEnd" value="{{ __('auth.texteEnd') }}" readonly>
                                 <input type="hidden" id="loginError" value="{{ __('auth.loginError') }}" readonly>
+                                <input type="hidden" id="alertSponsorId" value="{{ __('auth.alertSponsorId') }}" readonly>
+                                <button type="button" class="btn btn-info" onclick="loadSponsors()" style="display: none">cargar sponsors</button>
                                 <button type="button" class="btn btn-info" id="btnProfile" disabled>{{ __('auth.next') }}</button>
                             </div>
                         </div>
@@ -224,7 +220,7 @@
                                 </strong> 
                             </div>
                             <div style="text-align: right !important;" class=" form-group col-md-12">
-                                <button type="button" class="btn btn-info" id="btnProfile"><label id="botonProccess">{{ __('auth.next') }}</label></button>
+                                <!--<button type="button" class="btn btn-info" id="btnProfile"><label id="botonProccess">{{ __('auth.next') }}</label></button>-->
                             </div>
                         </div>
                     </div>
@@ -235,7 +231,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <br>
-                                <div class="alert alert-danger col-md-12 text-justify" role="alert" id="profileAltert">
+                                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
                                     {{ __('auth.loginAlert') }}
                                 </div>
                             </div>
@@ -254,7 +250,6 @@
                                 </div>
                             </div>
                             <hr>
-                            
                         </div>
                     </div>
                 </form>
@@ -268,10 +263,9 @@
     <script src="{{asset('regchileasset/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('regchileasset/js/singup/singup.js?v=1.0.4')}}"></script>
     <script src="{{asset('regchileasset/js/select2.min.js')}}"></script>
-    <script src="{{asset('regchileasset/js/custom-select2.js')}}"></script>
     <script src="{{asset('regchileasset/js/custom.js')}}"></script>
-    <script src="{{asset('regchileasset/plugins/sweetalerts/sweetalert2.min.js')}}"></script>
     <script src="{{asset('regchileasset/plugins/sweetalerts/custom-sweetalert.js')}}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         var alertDuplicateMail = $('#alertDuplicateMail').val();
         var alertMailsMatchError = $('#alertMailsMatchError').val();
@@ -281,6 +275,7 @@
         var rquired = $('#rquired').val();
         var texteEnd = $('#texteEnd').val();
         var loginErrortext = $('#loginError').val();
+        var alertSponsorIdtext = $('#alertSponsorId').val();
         
         function alertMailDup(){
             swal({
@@ -292,6 +287,17 @@
             $('#email').focus();
         }
 
+        function alertErroSponsorId(){
+            swal({
+                title: 'Error',
+                text: alertSponsorIdtext,
+                type: 'error',
+                padding: '2em'
+            })
+            $('#sponsorId').val('');
+            $('#superSearch').val('');
+        }
+        
         function emailNotMatch(){
             swal({
                 title: 'Error',

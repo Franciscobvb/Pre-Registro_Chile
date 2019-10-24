@@ -12,6 +12,7 @@ use Mail;
 use DB;
 
 class preregistro extends Controller{
+
     public function index(){
         return view('index');
     }
@@ -34,11 +35,7 @@ class preregistro extends Controller{
         $states = "chile";
         $cities = "Chile";
 
-        $conection = \DB::connection('sqlsrv');
-            $response = $conection->select("select * from Sponsor_CHL");
-        \DB::disconnect('sqlsrv');
-
-        return view('profile',compact('flag','country','language','states','cities', 'response'));
+        return view('profile',compact('flag','country','language','states','cities'));
     }
 
     public function validateEmail(Request $request){
@@ -56,11 +53,9 @@ class preregistro extends Controller{
         App::setLocale($language);
 
         if ($language == 'spa' && $country == 'ch') {
-            $flag = 'chile.png';
             $countryN = 1;
         }
         else if ($language == 'en' && $country == 'ch') {
-            $flag = 'chile.png';
             $countryN = 1;
         }
         
@@ -70,19 +65,21 @@ class preregistro extends Controller{
         $associateid = $request->input('associateid');
         $conection = \DB::connection('sqlsrv');
             $response = $conection->select("exec GenTree_CHL '$associateid';");
-            $upline = $conection->select("exec Sp_UplineTree_CHL '$associateid';");
+            //$upline = $conection->select("exec Sp_UplineTree_CHL '$associateid';");
         \DB::disconnect('sqlsrv');
 
-        return view('hijos',compact('flag','country','language','states','cities', 'response', 'upline'));
+        return view('hijos',compact('country','language','states','cities', 'response')); //, 'upline'
     }
 
     public function store(Request $request){
-
         $product = \App\consecutiveCodesTest::select(
             'consecutive_codes_test.code'
         )
         ->orderBy('code','desc')
         ->first();
+
+        $language = $request->language;
+        $country = $request->country;
     
         $newCode = $product->code + 2;
 
@@ -91,11 +88,11 @@ class preregistro extends Controller{
         $codeconsecutive->create_at = date('Y-m-d h:m:i');
         $codeconsecutive->save();
     
-        $associateid = $newCode;
+        $associateid = $newCode . '03';
         $associateType = '100';
         $signupdate = Date('Y-m-d h:m:s');
-        $apFirstName = $request->input('name');
-        $apLastName = $request->input('firstName') . ' ' . $request->input('secondName');
+        $apFirstName = $request->input('firstName') . ' ' . $request->input('secondName') . ', ' . $request->input('name');
+        $apLastName = '';
         $apTaxId = '';
         $address1 = '';
         $city = ''; 
@@ -126,16 +123,45 @@ class preregistro extends Controller{
         $conection = \DB::connection('sqlsrv');
             $login = $conection->insert("EXEC [dbo].[Sp_LoginCHL] '$associateid;$psswd'");
         \DB::disconnect('sqlsrv');
+
+        $conection = \DB::connection('sqlsrv');
+            $personal_data = $conection->table('Sponsor_CHL')
+            ->select('associateid as associateid','associateName as name','Email as email')
+            ->where('associateid','=', $SponsorId)
+            ->first();
+        \DB::disconnect('sqlsrv');
     
         $data = array(
-            'name' => "$apFirstName $apLastName",
+            'name' => "$apFirstName",
             'user' => "$associateid",
-            'pass' => "$psswd"
+            'pass' => "$psswd",
+            'lang' => "$language"
         );
+
+        $correoSponsor = '';
+
+        $associateid = $personal_data->associateid;
+        $associateName = $personal_data->name;
+        $Email = $personal_data->email;
+
+        $correoSponsor = $Email;
+        
         Mail::send('email', $data, function ($message) use ($request) {
             $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
             $message->to($request->input('email'))->subject('Pre-Registro Chile');
+            $message->bcc('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
         });
+
+        $datasponsor = array(
+            'name' => "$associateid - $apFirstName",
+            'lang' => "$language"
+        );
+
+        Mail::send('sponsormail', $datasponsor, function ($message) use ($correoSponsor) {
+            $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
+            $message->to($correoSponsor)->subject('Pre-Registro Chile');
+        });
+
         return \Response::json($datainserted);
     }
 
@@ -179,5 +205,14 @@ class preregistro extends Controller{
         //return view('pdf', compact('datainserted', 'sponsor'));
         $pdf = \PDF::loadView('pdf', compact('datainserted', 'sponsor', 'flag', 'country', 'language', 'states', 'cities'));
         return $pdf->download('NIKKEN CHile.pdf');
+    }
+
+    public function getSponsors(Request $request){
+        $datoabuscar = $request->datoabuscar;
+        $conection = \DB::connection('sqlsrv');
+            $response = $conection->select("select top 10 * from Sponsor_CHL where AssociateName like '%$datoabuscar%' or associateid  like '%$datoabuscar%'");
+        \DB::disconnect('sqlsrv');
+
+        return \Response::json($response);
     }
 }

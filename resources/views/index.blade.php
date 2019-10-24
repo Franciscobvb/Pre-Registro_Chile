@@ -111,7 +111,7 @@
                     
                     <div class="col-md-12 text-center mb-4">
                         <br>
-                        <h3><span><b>Select the Language / Selecciona el idioma</b></span></h3>
+                        <h3><span><b>Select your Language / Selecciona el idioma</b></span></h3>
                     </div>
                     <div class="col-md-12 tooltip-section" style="text-align: center; opacity: 1;">
                         <div class="row justify-content-center">
@@ -143,28 +143,7 @@
     <script type="text/javascript">
         //Inicializamos el tooltip       
         $('[data-toggle="tooltip"]').tooltip();
-        $('.menu-reg').css('display', 'none');
-        $('.count-down').css('display', 'block');
-    </script>
-    <script>
-        var countDownDate = new Date("Oct 23, 2019 09:00:00").getTime();
-        //var countDownDate = new Date("Oct 18, 2019 13:16:00").getTime();
-        var x = setInterval(function() {
-            var now = new Date().getTime();
-            var distance = countDownDate - now;
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            $('#days').text(days);
-            $('#hours').text(hours);
-            $('#minutes').text(minutes);
-            $('#seconds').text(seconds);
-            if (distance < 0) {
-                clearInterval(x);
-                $('.menu-reg').css('display', 'block');
-                $('.count-down').css('display', 'none');
-            }
-        }, 1000);
+        $('.menu-reg').css('display', 'block');
+        $('.count-down').css('display', 'none');
     </script>
 </html>

@@ -74,13 +74,13 @@
                 <br>
                 @foreach ($sponsor as $data)
                     @php
-                        $sponsor = $data->associateid . " - " . $data->AssociateName;
+                        $sponsor = $data->associateid . " - " . $data->associateName;
                     @endphp
                 @endforeach
                 @foreach ($datainserted as $row)
                     @php
                         $associateId = $row->AssociateId;
-                        $name = $row->ApLastName . ", " . $row->ApFirstName;
+                        $name = $row->ApFirstName;
                         $Phone1 = $row->Phone1;
                         $Phone2 = $row->Phone2;
                         $E_Mail = $row->E_Mail;

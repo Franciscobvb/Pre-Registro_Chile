@@ -38,6 +38,10 @@
             #zero-config_info{
                 display: block;
             }
+
+            th{
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -45,7 +49,7 @@
             <div class="row">
                 <div class="col-md-12 text-center mb-4">
                     <img alt="logo" src="https://nikkenlatam.com/oficina-virtual/assets/images/general/logo-header-black.png" class="theme-logo">
-                    <img alt="logo" src="{{asset('regchileasset/img/' . $flag )}}" width="5%">
+                    <img alt="logo" src="{{asset('regchileasset/img/chile.png')}}" width="5%">
                 </div>
                 <br>
                 <form id="formProfile" class="form-control" border="none" method="POST">
@@ -55,6 +59,9 @@
                             <div class="widget-header widget-heading">
                                 <br>
                                 <div class="row">
+                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                        <a href="javascript:void(0)" class="btn btn-info btn-rounded" onclick="salir()">{{ __('auth.btnExit') }}</a><br>
+                                    </div>
                                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center">
                                         <h4>{{ __('auth.genealogyTittleDown') }}</h4> <a href="javascript:void(0)" onclick="seeDown()"><span class="flaticon-view-3"></span> ({{ __('auth.labelSee') }})</a>
                                     </div>
@@ -74,16 +81,14 @@
                                         <table id="zero-config-down" class="table table-striped table-hover table-bordered" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th># {{ __('auth.tabNumber') }}</th>
-                                                    <th>{{ __('auth.tabLevel') }}</th>
+                                                    <th>{{ __('auth.tabNumber') }}</th>
                                                     <th>{{ __('auth.tabId') }}</th>
                                                     <th>{{ __('auth.tabName') }}</th>
                                                     <th>{{ __('auth.tabTipe') }}</th>
                                                     <th>{{ __('auth.tabCountry') }}</th>
-                                                    <!--<th>RANGO</th>-->
                                                     <th>{{ __('auth.tabMail') }}</th>
                                                     <th>{{ __('auth.tabCelpone') }}</th>
-                                                    <th>{{ __('auth.registerDate') }}</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -92,90 +97,16 @@
                                                 @endphp
                                                 @foreach ($response as $row)
                                                     @php
-                                                        $fecha1 = $row->SignupDate;
-                                                        $fecha = explode(" ", $fecha1);
-                                                        $fecha = $fecha[0];
+                                                        
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $num }}</td>
-                                                        <td>{{ $row->Nivel }}</td>
                                                         <td>{{ $row->associateid }}</td>
                                                         <td>{{ $row->ApFirstName }}</td>
-                                                        <td>ASESOR B.</td>
+                                                        <td>{{ __('auth.tabdistributor') }}</td>
                                                         <td>{{ $row->Pais }}</td>
-                                                        <!--<th>DIRECTO</th>-->
                                                         <td>{{ $row->E_Mail }}</td>
                                                         <td>{{ $row->Phone1 }}</td>
-                                                        <td>{{ $fecha }}</td>
-                                                    </tr>
-                                                    @php
-                                                        $num++;
-                                                    @endphp
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="statbox widget box box-shadow">
-                            <div class="widget-header widget-heading">
-                                <br>
-                                <div class="row">
-                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center">
-                                        <h4>{{ __('auth.genealogyTittleUP') }} </h4> <a href="javascript:void(0)" onclick="seeUp()"><span class="flaticon-view-3"></span> ({{ __('auth.labelSee') }})</a>
-                                    </div>
-                                    <input type="hidden" id="language" name="language" value="{{ $language }}"> 
-                                    <hr>
-                                </div>
-                                <br>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 tooltip-section up">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="table-responsive mb-4">
-                                        <br>
-                                        <table id="zero-config-up" class="table table-striped table-hover table-bordered" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th># {{ __('auth.tabNumber') }}</th>
-                                                    <th>{{ __('auth.tabLevel') }}</th>
-                                                    <th>{{ __('auth.tabId') }}</th>
-                                                    <th>{{ __('auth.tabName') }}</th>
-                                                    <th>{{ __('auth.tabTipe') }}</th>
-                                                    <th>{{ __('auth.tabCountry') }}</th>
-                                                    <!--<th>RANGO</th>-->
-                                                    <th>{{ __('auth.tabMail') }}</th>
-                                                    <th>{{ __('auth.tabCelpone') }}</th>
-                                                    <th>{{ __('auth.registerDate') }}</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                    $num = 1;
-                                                @endphp
-                                                @foreach ($upline as $row)
-                                                    @php
-                                                        $fecha1 = $row->SignupDate;
-                                                        $fecha = explode(" ", $fecha1);
-                                                        $fecha = $fecha[0];
-                                                    @endphp
-                                                    <tr>
-                                                        <td>{{ $num }}</td>
-                                                        <td>{{ $row->Nivel }}</td>
-                                                        <td>{{ $row->associateid }}</td>
-                                                        <td>{{ $row->ApFirstName }}</td>
-                                                        <td>ASESOR B.</td>
-                                                        <td>{{ $row->Pais }}</td>
-                                                        <!--<th>DIRECTO</th>-->
-                                                        <td>{{ $row->E_Mail }}</td>
-                                                        <td>{{ $row->Phone1 }}</td>
-                                                        <td>{{ $fecha }}</td>
                                                     </tr>
                                                     @php
                                                         $num++;
@@ -253,5 +184,9 @@
             }
             $('#vgpFinalTxt').text($('#vpFinalLabel').text());
         });
+
+        function salir(){
+            window.history.back();
+        }
     </script>
 </html>
