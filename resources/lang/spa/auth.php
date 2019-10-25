@@ -57,5 +57,8 @@ return [
     'loginError' => 'Usuario y/o contraseña incorrectos.',
     'tabdistributor' => 'Asesor',
     'btnExit' => 'Salir',
-    'alertSponsorId' => 'Agrega un patrocinador valido'
+    'alertSponsorId' => 'Agrega un patrocinador valido',
+    'labelLoad' => 'Registrando...',
+    'alertMailInvalid' => 'Correo invalido, favor de verificar',
+    'labelWithOutSponsor' => 'Sin Patrocinador de inscripción'
 ];

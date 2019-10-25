@@ -57,5 +57,8 @@ return [
     'loginError' => 'User or Password is incorrect.',
     'tabdistributor' => 'Distributor',
     'btnExit' => 'Exit',
-    'alertSponsorId' => 'Add a valid sponsor'
+    'alertSponsorId' => 'Add a valid sponsor',
+    'labelLoad' => 'Registering...',
+    'alertMailInvalid' => 'Invalid email, please verify',
+    'labelWithOutSponsor' => "I don't have sponsor"
 ];

@@ -72,6 +72,19 @@ class preregistro extends Controller{
     }
 
     public function store(Request $request){
+        date_default_timezone_set('America/Mexico_City');
+
+        $SponsorId = $request->input('sponsorId');
+
+        if($SponsorId == "sin_sponsor"){
+            $sponsorDefault = "6267203-9571503-9494103-10809403-8757303-11730103-9637503-8701603-5731603-470803-10567703-477303-2231703-227703-478903-4936003-7982203-2919703-13158703-8503703-1450503-2063403-17532303-1536403-5125003-6531303-6511903-7888103-6657503-3245503-8006703-8569803-10276603-13417903-13304203-9709003-12463203-12554703-9822003-11194603-11878103-9594803-3706503-2056103-2099603-2053003-10701003-2105403-4292703-12642803-11233703-4580203-12728303-2056703-12634003-2186803";
+            $sponsorDefault = explode('-', $sponsorDefault);
+            $randoom = rand(0, 55);
+            $SponsorId = $sponsorDefault[$randoom];
+        }
+
+        return $SponsorId; exit;
+        
         $product = \App\consecutiveCodesTest::select(
             'consecutive_codes_test.code'
         )
@@ -90,7 +103,7 @@ class preregistro extends Controller{
     
         $associateid = $newCode . '03';
         $associateType = '100';
-        $signupdate = Date('Y-m-d h:m:s');
+        $signupdate = Date('Y-m-d 00:00:00');
         $apFirstName = $request->input('firstName') . ' ' . $request->input('secondName') . ', ' . $request->input('name');
         $apLastName = '';
         $apTaxId = '';
@@ -106,19 +119,20 @@ class preregistro extends Controller{
         $phone1 = $request->input('celPhone');
         $phone2 = $request->input('phone');
         $email = $request->input('email');
+        $email = str_replace(' ', '', $email);
         $LicTradNum = '';
-        $Entered = Date('Y-m-d h:m:s');
+        $Entered = Date('Y-m-d 00:00:00');
         $AssociateRank = '';
         $PVPeriod = '0';
     
         $dataRegist = "$associateid;$associateType;$signupdate;$apFirstName;$apLastName;$apTaxId;$address1;$city;$State;$PostalCode;$Country;$SponsorId;$Usr;$pais;$status;$phone1;$phone2;$email;$LicTradNum;$Entered;$AssociateRank;$PVPeriod";
-    
+
         $conection = \DB::connection('sqlsrv');
             $response = $conection->insert("EXEC [dbo].[Datos_CHL] '$dataRegist'");
             $datainserted = $conection->select("SELECT * FROM  Associates_CHL WHERE Associateid = $associateid");
         \DB::disconnect('sqlsrv');
     
-        $psswd = substr( md5(microtime()), 1, 8);
+        $psswd = substr( md5(microtime() ), 1, 8);
     
         $conection = \DB::connection('sqlsrv');
             $login = $conection->insert("EXEC [dbo].[Sp_LoginCHL] '$associateid;$psswd'");
@@ -145,6 +159,8 @@ class preregistro extends Controller{
         $Email = $personal_data->email;
 
         $correoSponsor = $Email;
+
+        $cadena = str_replace(' ', '', $correoSponsor);
         
         Mail::send('email', $data, function ($message) use ($request) {
             $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
@@ -152,15 +168,17 @@ class preregistro extends Controller{
             $message->bcc('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
         });
 
-        $datasponsor = array(
-            'name' => "$associateid - $apFirstName",
-            'lang' => "$language"
-        );
+        if (!empty($cadena)) {
+            $datasponsor = array(
+                'name' => "$associateid - $apFirstName",
+                'lang' => "$language"
+            );
 
-        Mail::send('sponsormail', $datasponsor, function ($message) use ($correoSponsor) {
-            $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
-            $message->to($correoSponsor)->subject('Pre-Registro Chile');
-        });
+            Mail::send('sponsormail', $datasponsor, function ($message) use ($cadena) {
+                $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
+                $message->to('boya@imail8.net')->subject('Pre-Registro Chile');
+            });
+        }
 
         return \Response::json($datainserted);
     }
@@ -211,6 +229,15 @@ class preregistro extends Controller{
         $datoabuscar = $request->datoabuscar;
         $conection = \DB::connection('sqlsrv');
             $response = $conection->select("select top 10 * from Sponsor_CHL where AssociateName like '%$datoabuscar%' or associateid  like '%$datoabuscar%'");
+        \DB::disconnect('sqlsrv');
+
+        return \Response::json($response);
+    }
+
+    public function validarSponsor(Request $request){
+        $datoabuscar = $request->sponsorId;
+        $conection = \DB::connection('sqlsrv');
+            $response = $conection->select("SELECT * FROM Sponsor_CHL WHERE associateid = $datoabuscar");
         \DB::disconnect('sqlsrv');
 
         return \Response::json($response);

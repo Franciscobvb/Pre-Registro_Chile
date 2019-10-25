@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Expires" content="0">
+        <meta http-equiv="Last-Modified" content="0">
+        <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+        <meta http-equiv="Pragma" content="no-cache">
         <title>Nikken Chile - Pre Registro</title>
         <link rel="shortcut icon" type="image/x-icon" href="https://www.nikken.com/themes_wordpress_/images/icons/nikken_logo.ico">
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
@@ -22,14 +26,26 @@
             input[type=number]::-webkit-inner-spin-button, 
             input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
-            margin: 0; 
+            margin: 0;
             }
 
             input[type=number] { -moz-appearance:textfield; }
+
+            .switch-s.s-outline[class*="s-outline-"] .slider::before {
+                bottom: 1px;
+                left: 1px;
+                border: 2px solid #dfe2ea;
+                background-color:#000;
+                color: #f7f8fa;
+                box-shadow: 0 1px 15px 1px
+                rgba(52, 40, 104, 0.25);
+            }
+
+            .switch.s-outline .slider {
+                border: 2px solid #000;
+                background-color: transparent;
+            }
         </style>
-        <script>
-            
-        </script>
     </head>
     <body>
         <div class="form-register" id="divprofile">
@@ -116,20 +132,33 @@
                                     <label>{{ __('auth.warning')}}</label>
                                 </div>
                                 <div class="form-goup col-md-12">
-                                    <label for="sponsorId"><span style="color: red !important;"></span> <b>{{ __('auth.sponsorCode') }}</b></label>
-                                    <input type="text" id="sponsorId" name="sponsorId" class="form-control" readonly>
+                                    <!--<label for="sponsorId"><span style="color: red !important;"></span> <b>{{ __('auth.sponsorCode') }}</b></label>-->
+                                    <input type="hidden" id="sponsorId" name="sponsorId" class="form-control" readonly>
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <label>{{ __('auth.warning2')}}</label>
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <label for="superSearch"><span style="color: red !important;">*</span> <b>{{ __('auth.searchName') }}</b></label>
-                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()">
+                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()" oncha>
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <br><br>
                                     <label>{{ __('auth.label') }}</label><br>
                                     <label id="sponsorLabel"></label>
+                                </div>
+                                <div class="form-goup col-md-12">
+                                    <div class="row">
+                                        <div class="form-group col-2 text-center">
+                                            <label for="withoutSponsor" class="switch s-icons s-outline s-outline-dark">
+                                                <input type="checkbox" name="withoutSponsor" id="withoutSponsor" value="withoutSponsor">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </div>
+                                        <div class="form-group col-10">
+                                            <b><label>{{ __('auth.labelWithOutSponsor') }}</label></b>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -155,7 +184,8 @@
                                 <input type="hidden" id="texteEnd" value="{{ __('auth.texteEnd') }}" readonly>
                                 <input type="hidden" id="loginError" value="{{ __('auth.loginError') }}" readonly>
                                 <input type="hidden" id="alertSponsorId" value="{{ __('auth.alertSponsorId') }}" readonly>
-                                <button type="button" class="btn btn-info" onclick="loadSponsors()" style="display: none">cargar sponsors</button>
+                                <input type="hidden" id="alertMailInvalid" value="{{ __('auth.alertMailInvalid') }}" readonly>
+                                <label id="cargando" name="cargando" style="display: none"> {{ __('auth.labelLoad') }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                 <button type="button" class="btn btn-info" id="btnProfile" disabled>{{ __('auth.next') }}</button>
                             </div>
                         </div>
@@ -262,8 +292,7 @@
     <script src="{{asset('regchileasset/js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('regchileasset/bootstrap/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('regchileasset/js/singup/singup.js?v=1.0.4')}}"></script>
-    <script src="{{asset('regchileasset/js/select2.min.js')}}"></script>
-    <script src="{{asset('regchileasset/js/custom.js')}}"></script>
+    <script src="{{asset('regchileasset/plugins/sweetalerts/sweetalert2.min.js')}}"></script>
     <script src="{{asset('regchileasset/plugins/sweetalerts/custom-sweetalert.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
@@ -276,6 +305,17 @@
         var texteEnd = $('#texteEnd').val();
         var loginErrortext = $('#loginError').val();
         var alertSponsorIdtext = $('#alertSponsorId').val();
+        var alertMailInvalid = $('#alertMailInvalid').val();
+
+        function alertErroMailFormat(){
+            swal({
+                title: 'Error',
+                text: alertMailInvalid,
+                type: 'error',
+                padding: '2em'
+            })
+            $('#email').val('');
+        }
         
         function alertMailDup(){
             swal({

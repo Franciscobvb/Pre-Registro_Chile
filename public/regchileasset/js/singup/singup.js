@@ -1,11 +1,10 @@
 var emailDuplicado = false;
 var emailNotMatchbol = false;
 var dataRegist;
-
 var URLactual = window.location;
 
 $('#btnProfile').on('click', function(){
-    var data = $('#formProfile').serialize();
+    var dataform = $('#formProfile').serialize();
     document.getElementById("btnProfile").disabled = true;
 
     var brithdate = $('#birthDate').val();
@@ -17,40 +16,46 @@ $('#btnProfile').on('click', function(){
     $('#sponsorLabel').text(associated);
     $('#sponsorCode').text(associated);
     associated = associated.split(' - ');
-    if(associated.length >= 2){
-        var email = $('#email').val();
-        if(email != ''){
-            var confEmail = $('#confEmail').val();
-            if(confEmail != email){
-                emailNotMatch();
-            }
-            else{
-                if((parseInt(currentYear) - parseInt(birthYear)) < 18){
-                    swal({
-                        title: 'Error',
-                        text: alertHeigtAge,
-                        type: 'error',
-                        padding: '2em'
-                    })
-                }
-                else if(parseInt(birthYear) < 1930){
-                    swal({
-                        title: 'Error',
-                        text: alertAgeInvalid,
-                        type: 'error',
-                        padding: '2em'
-                    })
+
+    //$('#cargando').css("display", "inline");
+    var sponsor = $('#sponsorId').val();
+
+    if($('#name').val() == '' || $('#birthDate').val() == '' || $('#firstName').val() == '' || $('#secondName').val() == '' || $('#celPhone').val() == '' ||  $('#email').val().trim() == '' || $('#confEmail').val() == '' || $('#sponsorId').val() == '' ){
+        swal({
+            title: 'Error',
+            text: rquired,
+            type: 'error',
+            padding: '2em'
+        });
+        document.getElementById("btnProfile").disabled = false;
+        $('#cargando').css("display", "none");
+    }
+    else {
+        if(sponsor == "sin_sponsor" || associated.length >= 2){
+            var email = $('#email').val();
+            if(email != ''){
+                var confEmail = $('#confEmail').val();
+                if(confEmail != email){
+                    emailNotMatch();
                 }
                 else{
-                    if($('#name').val() == '' || $('#birthDate').val() == '' || $('#firstName').val() == '' || $('#secondName').val() == '' || $('#celPhone').val() == '' || $('#email').val() == '' || $('#confEmail').val() == '' || $('#sponsorId').val() == '' ){
+                    if((parseInt(currentYear) - parseInt(birthYear)) < 18){
                         swal({
                             title: 'Error',
-                            text: rquired,
+                            text: alertHeigtAge,
                             type: 'error',
                             padding: '2em'
-                        });
+                        })
                     }
-                    else {
+                    else if(parseInt(birthYear) < 1930){
+                        swal({
+                            title: 'Error',
+                            text: alertAgeInvalid,
+                            type: 'error',
+                            padding: '2em'
+                        })
+                    }
+                    else{
                         var mail = $('#email').val();
                         var dataMail = {email: mail}
                         $.ajax({
@@ -60,30 +65,28 @@ $('#btnProfile').on('click', function(){
                             success: function(Response) {
                                 if(Response != ''){
                                     alertMailDup();
-                                    document.getElementById("btnProfile").disabled = false;
                                 }
                                 else{
-                                    $.ajax({
-                                        type: 'GET',
-                                        url: URLactual + '/submitregistro',
-                                        data: data,
-                                        success: function(Response) {
-                                            if(Response != ''){
-                                                dataRegist = Response;
-                                                SwAlert(alertRegistrationOk);
-                                                $('#formConfirmation').css('display', 'block');
-                                                $('#confirmationAltert').css('display', 'block');
-                                                $('#formProfile').css('display', 'none');
-                                                $('#profileAltert').css('display', 'none');
-                                                $('#permissions').css('display', 'none');
-                                                var advisorcode = Response[0].AssociateId;
-                                                var advisonName = Response[0].ApLastName + ', ' + Response[0].ApFirstName;
-                                                $('#newadvisorCode').text(advisorcode);
-                                                $('#newadvisorName').text(advisonName);
-                                                $("#formProfile").trigger("reset");
+                                    if(sponsor != "sin_sponsor"){
+                                        var data = {sponsorId: sponsor };
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: URLactual + '/validaSponsor',
+                                            data: data,
+                                            success: function(Response){
+                                                if(Response == ''){
+                                                    alertErroSponsorId();
+                                                }
+                                                else{
+                                                    // Realiza el guardado a la base de datos
+                                                    submitRegistro(dataform);
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                                    }
+                                    else{
+                                        submitRegistro(dataform);
+                                    }
                                 }
                             }
                         });
@@ -91,25 +94,46 @@ $('#btnProfile').on('click', function(){
                 }
             }
         }
+        else{
+            alertErroSponsorId();
+        }
     }
-    else{
-        alertErroSponsorId();
-    }
+    document.getElementById("btnProfile").disabled = false;
 })
 
-function SwAlert(message){
-    const toast = swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        padding: '2em'
+function submitRegistro(dataform){
+    $.ajax({
+        type: 'GET',
+        url: URLactual + '/submitregistro',
+        data: dataform,
+        success: function(Response) {
+            if(Response != ''){
+                /*dataRegist = Response;
+                SwAlert(alertRegistrationOk);
+                $('#formConfirmation').css('display', 'block');
+                $('#confirmationAltert').css('display', 'block');
+                $('#formProfile').css('display', 'none');
+                $('#profileAltert').css('display', 'none');
+                $('#permissions').css('display', 'none');
+                var advisorcode = Response[0].AssociateId;
+                var advisonName = Response[0].ApLastName + ', ' + Response[0].ApFirstName;
+                $('#newadvisorCode').text(advisorcode);
+                $('#newadvisorName').text(advisonName);
+                $("#formProfile").trigger("reset");*/
+                alert(Response);
+            }
+        }
     });
-    toast({
-        type: 'success',
+}
+
+function SwAlert(message){
+    swal({
         title: message,
-        padding: '2em',
+        text: '',
+        type: 'success',
+        padding: '2em'
     })
+    $('#cargando').css("display", "none");
 }
 
 function showProfile(){
@@ -126,6 +150,18 @@ $('#superSearch').on('change', function(){
     associated = associated.split(' - ');
     if(associated.length >= 2){
         $('#sponsorId').val(associated[0]);
+        var sponsor = $('#sponsorId').val();
+        var data = {sponsorId: sponsor };
+        $.ajax({
+            type: 'GET',
+            url: URLactual + '/validaSponsor',
+            data: data,
+            success: function(Response){
+                if(Response == ''){
+                    alertErroSponsorId();
+                }
+            }
+        });
     }
     else{
         alertErroSponsorId();
@@ -153,6 +189,7 @@ function validateMailEqual(){
         var confEmail = $('#confEmail').val();
         if(confEmail != email){
             emailNotMatch();
+            $('#cargando').css("display", "none");
         }
     }
 }
@@ -167,7 +204,25 @@ $("#chk2").on( 'click', function() {
     }
 });
 
+$("#withoutSponsor").on( 'click', function() {
+    if($("#withoutSponsor").is(':checked')){
+        $('#superSearch').attr("disabled", "true");
+        $('#sponsorId').val("sin_sponsor");
+        $('#superSearch').val("");
+    }
+    else{
+        $('#superSearch').removeAttr("disabled");
+        $('#sponsorId').val("");
+        $('#superSearch').val("");
+    }
+});
+
 $(function(){
+    //$("#formProfile").trigger("reset");
+    $("#chk2").prop("checked", false);
+    $("#withoutSponsor").prop("checked", false);
+    document.getElementById("btnProfile").disabled = true;
+
     $('#celPhone').keypress(function(e) {
         if(isNaN(this.value + String.fromCharCode(e.charCode))) 
         return false;
@@ -202,22 +257,29 @@ $(function(){
 });
 
 function validateMail(){
-    var mail = $('#email').val();
+    var mail = $('#email').val().trim();
+    $('#email').val(mail);
     var data = {email: mail}
-    $.ajax({
-        type: 'GET',
-        url: URLactual + '/validateEmail',
-        data: data,
-        success: function(Response) {
-            if(Response != ''){
-                alertMailDup();
-                emailDuplicado = true;
+
+    if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(mail)){
+        $.ajax({
+            type: 'GET',
+            url: URLactual + '/validateEmail',
+            data: data,
+            success: function(Response) {
+                if(Response != ''){
+                    alertMailDup();
+                    emailDuplicado = true;
+                }
+                else{
+                    emailDuplicado = false;
+                }
             }
-            else{
-                emailDuplicado = false;
-            }
-        }
-    });
+        });
+    } else {
+        alertErroMailFormat();
+        $('#cargando').css("display", "none");
+    }
 }
 
 function login(){ 
@@ -239,11 +301,11 @@ function login(){
             }
             else{
                 loginErrorAlert();
+                $('#cargando').css("display", "none");
             }
         }
     });
 }
-
 
 var down = 0;
 var up = 0;

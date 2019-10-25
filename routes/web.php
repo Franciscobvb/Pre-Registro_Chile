@@ -8,3 +8,4 @@ Route::post('profile/{country}/{language}/genealogy/', 'preregistro@getgenealogy
 Route::get('profile/{country}/{language}/loginprocess/', 'preregistro@Loginproccess');
 Route::get('/profile/{country}/{language}/pdf/', 'preregistro@pdf');
 Route::get('/profile/{country}/{language}/sponsors/', 'preregistro@getSponsors');
+Route::get('/profile/{country}/{language}/validaSponsor/', 'preregistro@validarSponsor');
