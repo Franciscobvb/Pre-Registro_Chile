@@ -60,5 +60,5 @@ return [
     'alertSponsorId' => 'Agrega un patrocinador valido',
     'labelLoad' => 'Registrando...',
     'alertMailInvalid' => 'Correo invalido, favor de verificar',
-    'labelWithOutSponsor' => 'Sin Patrocinador de inscripción'
+    'labelWithOutSponsor' => 'Asignar patrocinador aleatoriamente'
 ];

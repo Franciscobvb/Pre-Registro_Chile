@@ -20,7 +20,7 @@ $('#btnProfile').on('click', function(){
     //$('#cargando').css("display", "inline");
     var sponsor = $('#sponsorId').val();
 
-    if($('#name').val() == '' || $('#birthDate').val() == '' || $('#firstName').val() == '' || $('#secondName').val() == '' || $('#celPhone').val() == '' ||  $('#email').val().trim() == '' || $('#confEmail').val() == '' || $('#sponsorId').val() == '' ){
+    if($('#name').val().trim() == '' || $('#birthDate').val().trim() == '' || $('#firstName').val().trim() == '' || $('#secondName').val().trim() == '' || $('#celPhone').val().trim() == '' ||  $('#email').val().trim() == '' || $('#confEmail').val().trim() == '' || $('#sponsorId').val().trim() == '' ){
         swal({
             title: 'Error',
             text: rquired,
@@ -108,7 +108,7 @@ function submitRegistro(dataform){
         data: dataform,
         success: function(Response) {
             if(Response != ''){
-                /*dataRegist = Response;
+                dataRegist = Response;
                 SwAlert(alertRegistrationOk);
                 $('#formConfirmation').css('display', 'block');
                 $('#confirmationAltert').css('display', 'block');
@@ -119,8 +119,7 @@ function submitRegistro(dataform){
                 var advisonName = Response[0].ApLastName + ', ' + Response[0].ApFirstName;
                 $('#newadvisorCode').text(advisorcode);
                 $('#newadvisorName').text(advisonName);
-                $("#formProfile").trigger("reset");*/
-                alert(Response);
+                //$("#formProfile").trigger("reset");
             }
         }
     });
@@ -222,6 +221,7 @@ $(function(){
     $("#chk2").prop("checked", false);
     $("#withoutSponsor").prop("checked", false);
     document.getElementById("btnProfile").disabled = true;
+    $('#sponsorLabel').text('');
 
     $('#celPhone').keypress(function(e) {
         if(isNaN(this.value + String.fromCharCode(e.charCode))) 
@@ -240,7 +240,6 @@ $(function(){
 
     var associated = $('#superSearch').val()
     $('#sponsorLabel').text(associated);
-    $('#sponsorCode').text(associated);
     associated = associated.split(' - ');
     $('#sponsorId').val(associated[0]);
 

@@ -60,5 +60,5 @@ return [
     'alertSponsorId' => 'Add a valid sponsor',
     'labelLoad' => 'Registering...',
     'alertMailInvalid' => 'Invalid email, please verify',
-    'labelWithOutSponsor' => "I don't have sponsor"
+    'labelWithOutSponsor' => "ASSIGN RANDOM SPONSOR"
 ];

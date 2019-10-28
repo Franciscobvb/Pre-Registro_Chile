@@ -19,6 +19,7 @@
                 $cretedntialsLabel = 'Credentials';
                 $cretedntialsUser = 'User ID';
                 $cretedntialsPass = 'Password';
+                $sponsorInfo = "Sponsor: ";
             }
             else{
                 $title1 = 'Gracias ';
@@ -26,6 +27,7 @@
                 $cretedntialsLabel = 'Credenciales de acceso';
                 $cretedntialsUser = 'Usuario';
                 $cretedntialsPass = 'Contraseña';
+                $sponsorInfo = "Patrocinador: ";
             }
         @endphp
         <tr>
@@ -53,6 +55,9 @@
                         {{ $cretedntialsUser }}: {!! $user !!} <br>
                         {{ $cretedntialsPass }}: {!! $pass !!}
                     </p>
+                    <b>
+                        {{ $sponsorInfo }}: {!! $sponsor !!}
+                    </b>
                 </div>
             </td>
         </tr>
