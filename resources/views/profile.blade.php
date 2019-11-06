@@ -21,6 +21,8 @@
         <link href="{{asset('regchileasset/plugins/sweetalerts/sweetalert.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('regchileasset/css/ui-kit/custom-sweetalert.css')}}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
         <style>
             .row [class*="col-"] .widget .widget-header h4 { color: green; }
             input[type=number]::-webkit-inner-spin-button, 
@@ -107,7 +109,7 @@
                                     </div>
                                     <div class="form-goup col-md-12">
                                         <label for="birthDate"><span style="color: red !important;">*</span> <b>{{ __('auth.birthDate') }}</b></label>
-                                        <input type="date" id="birthDate" name="birthDate" class="form-control">
+                                        <input type="text" id="date" name="birthDate" class="form-control">
                                     </div>
                                     <div class="form-goup col-md-12">
                                         <label for="celPhone"><span style="color: red !important;">*</span> <b>{{ __('auth.celPhone') }}</b></label>
@@ -140,7 +142,8 @@
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <label for="superSearch"><span style="color: red !important;">*</span> <b>{{ __('auth.searchName') }}</b></label>
-                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()" oncha>
+                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()">
+                                    <div id="respuesta"></div>
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <br><br>
@@ -294,6 +297,8 @@
     <script src="{{asset('regchileasset/js/singup/singup.js?v=1.0.4')}}"></script>
     <script src="{{asset('regchileasset/plugins/sweetalerts/sweetalert2.min.js')}}"></script>
     <script src="{{asset('regchileasset/plugins/sweetalerts/custom-sweetalert.js')}}"></script>
+    <script src="{{asset('regchileasset/plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+    <script src="{{asset('regchileasset/plugins/input-mask/input-mask.js')}}"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         var alertDuplicateMail = $('#alertDuplicateMail').val();

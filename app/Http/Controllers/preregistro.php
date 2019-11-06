@@ -73,8 +73,6 @@ class preregistro extends Controller{
 
     public function store(Request $request){
         date_default_timezone_set('America/Mexico_City');
-
-        //return ''; exit;
         
         $product = \App\consecutiveCodesTest::select(
             'consecutive_codes_test.code'
@@ -129,9 +127,9 @@ class preregistro extends Controller{
         $dataRegist = "$associateid;$associateType;$signupdate;$apFirstName;$apLastName;$apTaxId;$address1;$city;$State;$PostalCode;$Country;$SponsorId;$Usr;$pais;$status;$phone1;$phone2;$email;$LicTradNum;$Entered;$AssociateRank;$PVPeriod";
 
         $conection = \DB::connection('sqlsrv');
-            $response = $conection->insert("EXEC [dbo].[Datos_CHL] '$dataRegist'");
+            //$response = $conection->insert("EXEC [dbo].[Datos_CHL] '$dataRegist'");
             //$datainserted = $conection->select("SELECT * FROM  Associates_CHL WHERE Associateid = $associateid");
-            $datainserted = $conection->select("SELECT * FROM  Associates_CHL WHERE Associateid = 24382703");
+            $datainserted = $conection->select("SELECT * FROM  Associates_CHL WHERE Associateid = 24218903");
         \DB::disconnect('sqlsrv');
     
         $psswd = substr( md5(microtime() ), 1, 8);
@@ -162,12 +160,16 @@ class preregistro extends Controller{
             'lang' => "$language",
             'sponsor' => "$personal_data->associateid - $personal_data->name",
         );
-        
-        Mail::send('email', $data, function ($message) use ($request) {
-            $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
-            $message->to('boya@imail8.net')->subject('Pre-Registro Chile');
-            $message->bcc('boya@imail8.net', 'Pre-Registro Chile');
-        });
+
+        $contmailLogin = 0;
+        if($contmailLogin <= 1){
+            Mail::send('email', $data, function ($message) use ($request) {
+                $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
+                $message->to('voropo1821@mail8app.com')->subject('Pre-Registro Chile');
+                $message->bcc('voropo1821@mail8app.com', 'Pre-Registro Chile');
+            });
+            $contmailLogin = 10;
+        }
 
         if (!empty($cadena)) {
             $datasponsor = array(
@@ -176,9 +178,60 @@ class preregistro extends Controller{
             );
 
             Mail::send('sponsormail', $datasponsor, function ($message) use ($cadena) {
-                $message->from('boya@imail8.net', 'Pre-Registro Chile');
-                $message->to('boya@imail8.net')->subject('Pre-Registro Chile');
+                $message->from('voropo1821@mail8app.com', 'Pre-Registro Chile');
+                $message->to('voropo1821@mail8app.com')->subject('Pre-Registro Chile');
             });
+        }
+
+        $contmailLogin = 0;
+        if($contmailLogin == 0){
+
+            $conection = \DB::connection('sqlsrv');
+                $login = $conection->insert("EXEC [dbo].[Sp_LoginCHL] '$associateid;$psswd'");
+            \DB::disconnect('sqlsrv');
+            $countInsertLogin = 10;
+
+            $conection = \DB::connection('sqlsrv');
+                $personal_data = $conection->table('Sponsor_CHL')
+                ->select('associateid as associateid','associateName as name','Email as email')
+                ->where('associateid','=', $SponsorId)
+                ->first();
+            \DB::disconnect('sqlsrv');
+        
+            $correoSponsor = '';
+
+            $Email = $personal_data->email;
+
+            $correoSponsor = $Email;
+
+            $cadena = str_replace(' ', '', $correoSponsor);
+
+            $data = array(
+                'name' => "$apFirstName",
+                'user' => "$associateid",
+                'pass' => "$psswd",
+                'lang' => "$language",
+                'sponsor' => "$personal_data->associateid - $personal_data->name",
+            );
+            Mail::send('email', $data, function ($message) use ($request) {
+                $message->from('fmelchor@nikkenlatam.com', 'Pre-Registro Chile');
+                $message->to('voropo1821@mail8app.com')->subject('Pre-Registro Chile');
+                $message->bcc('voropo1821@mail8app.com', 'Pre-Registro Chile');
+            });
+
+            if (!empty($cadena)) {
+                $datasponsor = array(
+                    'name' => "$associateid - $apFirstName",
+                    'lang' => "$language"
+                );
+
+                Mail::send('sponsormail', $datasponsor, function ($message) use ($cadena) {
+                    $message->from('voropo1821@mail8app.com', 'Pre-Registro Chile');
+                    $message->to('voropo1821@mail8app.com')->subject('Pre-Registro Chile');
+                });
+            }
+
+            $contmailLogin = 10;
         }
 
         return \Response::json($datainserted);
@@ -228,11 +281,20 @@ class preregistro extends Controller{
 
     public function getSponsors(Request $request){
         $datoabuscar = $request->datoabuscar;
+
         $conection = \DB::connection('sqlsrv');
-            $response = $conection->select("select top 10 * from Sponsor_CHL where AssociateName like '%$datoabuscar%' or associateid  like '%$datoabuscar%'");
+            $response = $conection->select("SELECT TOP 7 associateid, AssociateName  FROM Sponsor_CHL WHERE associateid LIKE '%$datoabuscar%' OR AssociateName LIKE '%$datoabuscar%'");
         \DB::disconnect('sqlsrv');
 
-        return \Response::json($response);
+        $resultado = '';
+        foreach ($response as $key) {
+            $resultado = $resultado . "
+                <a href='javascript:void(0)' style='cursor: pointer; width: 100%;' id='" . $key->associateid . '-' . $key->AssociateName ."' onclick='clearDiv(this.id)'>" . 
+                    "<label width='100%'>" . $key->associateid . '-' . $key->AssociateName . "</label>" .
+                "</a'>
+            ";
+        }
+        return $resultado;
     }
 
     public function validarSponsor(Request $request){
