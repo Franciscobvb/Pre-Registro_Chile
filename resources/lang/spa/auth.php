@@ -12,8 +12,8 @@ return [
     'conEmail' => 'Confirma tu correo: ',
     'warning' => 'La persona que te inscribe, debe tener un código de Asesor de Bienestar Independiente, a continuación digita el mismo para buscarlo:',
     'sponsorCode' => 'Código patrocinador: ',
-    'warning2' => 'Si no lo sabes puedes buscarlo por nombre, cuando lo encuentres, selecciona el nombre:',
-    'searchName' => 'Buscar por nombre o Código patrocinador:',
+    'warning2' => 'Si no lo sabes puedes buscarlo por nombre, cuando lo encuentres, selecciona el nombre (seleccionar un asesor del listado):',
+    'searchName' => 'Buscar por nombre o Código de patrocinador (seleccionar un asesor del listado):',
     'permissions' => 'Autorizo a nikken a que me envié información por correo electrónico',
     'label' => 'Patrocinador: ',
     'next' => 'Siguiente',
@@ -60,5 +60,7 @@ return [
     'alertSponsorId' => 'Agrega un patrocinador valido',
     'labelLoad' => 'Registrando...',
     'alertMailInvalid' => 'Correo invalido, favor de verificar',
-    'labelWithOutSponsor' => 'Asignar patrocinador aleatoriamente'
+    'labelWithOutSponsor' => 'Asignar patrocinador aleatoriamente',
+    'alertErrorReg' => 'Error al registrar, por favor, intente nuevamente.',
+    'btnEndRegistration' => 'Finalizar inscripción'
 ];

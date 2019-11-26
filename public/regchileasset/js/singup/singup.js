@@ -136,7 +136,7 @@ function submitRegistro(dataform){
                 $('#profileAltert').css('display', 'none');
                 $('#permissions').css('display', 'none');
                 var advisorcode = Response[0].AssociateId;
-                var advisonName = Response[0].ApLastName + ', ' + Response[0].ApFirstName;
+                var advisonName = Response[0].ApFirstName;
                 $('#newadvisorCode').text(advisorcode);
                 $('#newadvisorName').text(advisonName);
                 $("#formProfile").trigger("reset");
@@ -145,6 +145,7 @@ function submitRegistro(dataform){
             }
         }
     });
+    eliminarCookies();
 }
 
 function SwAlert(message){
@@ -152,6 +153,7 @@ function SwAlert(message){
         title: message,
         text: '',
         type: 'success',
+        padding: '2em'
     })
     $('#cargando').css("display", "none");
 }
@@ -162,31 +164,6 @@ function showProfile(){
     $('#formConfirmation').hide();
     $('#confirmationAltert').hide();
 }
-
-/*$('#superSearch').on('change', function(){
-    var associated = $('#superSearch').val()
-    $('#sponsorLabel').text(associated);
-    $('#sponsorCode').text(associated);
-    associated = associated.split('-');
-    if(associated.length >= 2){
-        $('#sponsorId').val(associated[0]);
-        var sponsor = $('#sponsorId').val();
-        var data = {sponsorId: sponsor };
-        $.ajax({
-            type: 'GET',
-            url: URLactual + '/validaSponsor',
-            data: data,
-            success: function(Response){
-                if(Response == ''){
-                    alertErroSponsorId();
-                }
-            }
-        });
-    }
-    else{
-        alertErroSponsorId();
-    }
-});*/
 
 $('#celPhone').on('change', function(){
     var phone = $('#celPhone').val()
@@ -238,7 +215,7 @@ $("#withoutSponsor").on( 'click', function() {
 });
 
 $(function(){
-    //$("#formProfile").trigger("reset");
+    $("#formProfile").trigger("reset");
     $("#chk2").prop("checked", false);
     $("#withoutSponsor").prop("checked", false);
     document.getElementById("btnProfile").disabled = true;
@@ -358,10 +335,6 @@ function getPdf(){
     window.open(URLactual + "/pdf?associateid=" + dataRegist[0].AssociateId + "&sponsorid=" + dataRegist[0].SponsorId , "ventana1" , "width=500,height=300,scrollbars=NO")
 }
 
-function finalizar(){
-    
-}
-
 function loadSponsors(){
     var valor = $('#superSearch').val();
     var data = {datoabuscar: valor}
@@ -376,8 +349,55 @@ function loadSponsors(){
 }
 
 function clearDiv(id){
+    $("#sponsorRandoom").hide();
+    $("#sponsorRandoomLabel").hide();
     $("#respuesta").empty();
     $('#superSearch').val(id);
     var code = id.split("-");
     $('#sponsorId').val(code[0]);
+}
+
+function eliminarCookies() {
+    document.cookie.split(";").forEach(function(c) {
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+}
+
+function validaVacio(){
+    var dato = $("#superSearch").val();
+    if(dato.trim() == ''){
+        $("#sponsorRandoom").show();
+        $("#sponsorRandoomLabel").show();
+        $("#respuesta").empty();
+    }
+}
+
+function logintest(){ 
+    var userName = $('#userName').val();
+    var userPass = $('#userPass').val();
+    var _token = $('#_token').val();
+    var data = {userName: userName, userPass: userPass, _token: _token}
+    $.ajax({
+        type: 'post',
+        url: URLactual + '/loginprocesstest',
+        data: data,
+        success: function(Response) {
+            if(Response != ''){
+                document.write('<form id="genealogyForm" method="post" action="genealogytest"><input name="associateid" type="hidden" value="' + Response[0].Associateid + '" /><input name="_token" type="hidden" value="' + _token + '" /></form>');
+                f=document.getElementById('genealogyForm');
+                if(f){
+                    f.submit();
+                }
+            }
+            else{
+                loginErrorAlert();
+                $('#cargando').css("display", "none");
+            }
+        }
+    });
+}
+
+function hidealeatorio(){
+    $("#sponsorRandoom").hide();
+    $("#sponsorRandoomLabel").hide();
 }

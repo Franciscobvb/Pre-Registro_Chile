@@ -64,16 +64,16 @@
                         </ol>
                     </div>
                 </div>
-                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert" hidden>
                     {{ __('auth.alert') }}
                 </div>
-                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert" hidden>
                     {{ __('auth.rquired') }}
                 </div>
                 <div class="alert alert-info col-md-12 text-justify" role="alert" id="confirmationAltert" style="display: none">
                     {{ __('auth.alertConfirmation') }} <br><br> {{ __('auth.alertConfirmation2') }}
                 </div>
-                <form id="formProfile" class="form-control" border="none" method="get">
+                <form id="formProfile" class="form-control" border="none" method="get" style="display: none">
                     <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                     <div class="col-lg-12">
                         <div class="statbox widget box box-shadow">
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <label for="superSearch"><span style="color: red !important;">*</span> <b>{{ __('auth.searchName') }}</b></label>
-                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()" onchange="validaVacio()" onfocus="hidealeatorio()" onblur="validaVacio()">
+                                    <input class="form-control" name="superSearch" id="superSearch" onkeyup="loadSponsors()" onchange="validaVacio()">
                                     <div id="respuesta"></div>
                                 </div>
                                 <div class="form-goup col-md-12" id="sponsorRandoomLabel">
@@ -277,7 +277,7 @@
                                 </div>
                                 <div class="form-goup col-md-12">
                                     <br>
-                                    <button type="button" class="btn btn-info" id="loginButton" onclick="login()">{{ __('auth.loginButton') }}</button>
+                                    <button type="button" class="btn btn-info" id="loginButton" onclick="logintest()">{{ __('auth.loginButton') }} test</button>
                                 </div>
                             </div>
                             <hr>

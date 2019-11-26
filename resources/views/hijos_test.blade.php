@@ -112,7 +112,7 @@
                                                         <td>{{ $row->E_Mail }}</td>
                                                         <td>{{ $row->Phone1 }}</td>
                                                         <td>
-                                                            <a type="button" class="btn btn-info btn-rounded" href="http://127.0.0.1:8000/preinscripcion/retomar/profile/ch/spa/{{ base64_encode($row->E_Mail) }}" size="50px" width="50px" target="_new">{{ __('auth.btnEndRegistration') }}</a>
+                                                            <a type="button" class="btn btn-info btn-rounded" href="http://127.0.0.1:8000/preinscripcion/retomar/profile/ch/spa/{{ base64_encode($row->E_Mail) }}" size="50px" width="50px" target="_new">{{ __('auth.btnEndRegistration') }} test</a>
                                                         </td>
                                                     </tr>
                                                     @php

@@ -60,5 +60,7 @@ return [
     'alertSponsorId' => 'Add a valid sponsor',
     'labelLoad' => 'Registering...',
     'alertMailInvalid' => 'Invalid email, please verify',
-    'labelWithOutSponsor' => "ASSIGN RANDOM SPONSOR"
+    'labelWithOutSponsor' => "ASSIGN RANDOM SPONSOR",
+    'alertErrorReg' => 'Registration failed, please try again.',
+    'btnEndRegistration' => 'End Registration'
 ];
