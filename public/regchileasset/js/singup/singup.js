@@ -285,7 +285,7 @@ function login(){
     var _token = $('#_token').val();
     var data = {userName: userName, userPass: userPass, _token: _token}
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: URLactual + '/loginprocess',
         data: data,
         success: function(Response) {

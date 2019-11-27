@@ -86,6 +86,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>{{ __('auth.tabNumber') }}</th>
+                                                    <th>{{ __('auth.tabLevel') }}</th>
                                                     <th>{{ __('auth.tabId') }}</th>
                                                     <th>{{ __('auth.tabName') }}</th>
                                                     <th>{{ __('auth.tabTipe') }}</th>
@@ -105,14 +106,19 @@
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $num }}</td>
+                                                        <td>{{ $row->Nivel }}</td>
                                                         <td>{{ $row->associateid }}</td>
                                                         <td>{{ $row->ApFirstName }}</td>
                                                         <td>{{ __('auth.tabdistributor') }}</td>
                                                         <td>{{ $row->Pais }}</td>
                                                         <td>{{ $row->E_Mail }}</td>
                                                         <td>{{ $row->Phone1 }}</td>
-                                                        <td>
-                                                            <a type="button" class="btn btn-info btn-rounded" href="http://127.0.0.1:8000/preinscripcion/retomar/profile/ch/spa/{{ base64_encode($row->E_Mail) }}" size="50px" width="50px" target="_new">{{ __('auth.btnEndRegistration') }}</a>
+                                                        <td class="text-center">
+                                                            <p style="width: 200px">
+                                                                <a type="button" class="btn btn-info btn-rounded" href="http://127.0.0.1:8000/preinscripcion/retomar/profile/ch/spa/{{ base64_encode($row->E_Mail) }}" target="_new">
+                                                                    {{ __('auth.btnEndRegistration') }}
+                                                                </a>
+                                                            </p>
                                                         </td>
                                                     </tr>
                                                     @php

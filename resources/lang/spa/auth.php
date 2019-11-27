@@ -62,5 +62,6 @@ return [
     'alertMailInvalid' => 'Correo invalido, favor de verificar',
     'labelWithOutSponsor' => 'Asignar patrocinador aleatoriamente',
     'alertErrorReg' => 'Error al registrar, por favor, intente nuevamente.',
-    'btnEndRegistration' => 'Finalizar inscripción'
+    'btnEndRegistration' => 'Finalizar inscripción',
+    'tabLevel' => 'Nivel de profundidad'
 ];

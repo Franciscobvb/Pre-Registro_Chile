@@ -62,5 +62,6 @@ return [
     'alertMailInvalid' => 'Invalid email, please verify',
     'labelWithOutSponsor' => "ASSIGN RANDOM SPONSOR",
     'alertErrorReg' => 'Registration failed, please try again.',
-    'btnEndRegistration' => 'End Registration'
+    'btnEndRegistration' => 'End Registration',
+    'tabLevel' => 'Depth level'
 ];
