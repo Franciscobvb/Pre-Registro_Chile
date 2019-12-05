@@ -33,7 +33,7 @@ return [
     'loginButton' => 'Acceder',
     'loginNameLabel' => 'Usuario: ',
     'loginPassLabel' => 'Contraseña: ',
-    'loginAlert' => 'Si quieres revisar tus pre-inscripciones, por favor ingresa tu código de asesor y la contraseña que recibiste por correo electrónico',
+    'loginAlert' => 'Para finalizar el proceso de Pre - inscripción, por favor ingresa tu código de asesor y la contraseña que recibiste por correo electrónico.',
     'rquired' => 'Los campos marcados con * son requeridos para el pre-registro.',
     'alertMailsMatchError' => 'Los correo no coinciden',
     'alertDuplicateMail' => 'No se puede registrar el mismo correo dos veces',
@@ -63,5 +63,17 @@ return [
     'labelWithOutSponsor' => 'Asignar patrocinador aleatoriamente',
     'alertErrorReg' => 'Error al registrar, por favor, intente nuevamente.',
     'btnEndRegistration' => 'Finalizar inscripción',
-    'tabLevel' => 'Nivel de profundidad'
+    'tabLevel' => 'Nivel de profundidad',
+    'statusNot' => 'No ha finalizado la inscripción',
+    'statusFinally' => 'Inscripción finalizada',
+    'statusPat'=> 'Patrocinador no inscrito',
+    'labelRegister1' => 'La página de Pre-Registro ha sido cerrada. Si tú no hiciste tu pre-registro, ahora puedes ya hacer tu registro completo dando ',
+    'labelRegister2' => 'clic aquí',
+    'statusPay'=> 'Finalizar pago',
+    'btnForgotPass' => 'Olvide mi contraseña',
+    'labelFmail' => 'Correo registrado: ',
+    'btnRecoverPass' => 'Recuperar cuenta',
+    'lavelFpassMessage' => 'Validadndo',
+    'alertAcountError' => 'No se encontró el correo',
+    'alertAcountRecovered' => 'Las credenciales han sido enviadas a tu correo'
 ];

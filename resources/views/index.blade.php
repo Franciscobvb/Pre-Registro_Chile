@@ -116,14 +116,14 @@
                     <div class="col-md-12 tooltip-section" style="text-align: center; opacity: 1;">
                         <div class="row justify-content-center">
                             <div class="form-group col-md-3">
-                                <a href="profile/ch/en/">
+                                <a href="profile/ch/en">
                                     <img src="{{asset('regchileasset/img/chile.png')}}" class="img_country rounded bs-toolti" data-toggle="tooltip" data-placement="left" title="ENGLISH">
                                 </a>
                                 <br>
                                 <label for="full-name" class="text-center"> <b>ENGLISH</b></label>   
                             </div>
                             <div class="form-group col-md-3">
-                                <a href="profile/ch/spa/">
+                                <a href="profile/ch/spa">
                                     <img src="{{asset('regchileasset/img/chile.png')}}" class="img_country rounded bs-toolti" data-toggle="tooltip" data-placement="left" title="ESPAÑOL">
                                 </a>
                                 <br>

@@ -99,10 +99,95 @@
                                             <tbody>
                                                 @php
                                                     $num = 1;
+                                                    $data = 0;
                                                 @endphp
                                                 @foreach ($response as $row)
                                                     @php
-                                                        
+                                                        $curAssocInfo = explode(';', $statusGen);
+                                                        $assocStatus = explode('-', $curAssocInfo[$data]);
+
+                                                        $enable = false;
+                                                        $text = "";
+                                                        $target = "";
+                                                        $class = "";
+                                                        $val = "";
+                                                        $patRestoGenealogia = 0;
+
+                                                        $test = "";
+
+                                                        if($assocStatus[4] == 1 && $assocStatus[1] == 0){
+                                                            $text = __('auth.statusPay');
+                                                            $href = "http://signup.nikkenlatam.com/incorporation/checkoutre?email=" . $row->E_Mail . "&item=5006&amount=1/profile/ch/$language";
+                                                            $target = "target='_new'";
+                                                            $class = "btn btn-info btn-rounded";
+                                                        }
+                                                        else{
+                                                            if($row->associateid == $associateid){
+                                                                if($assocStatus[3] == 'otro'){
+                                                                    if($assocStatus[1] == 1){
+                                                                        $patRestoGenealogia = 1;
+                                                                        $text = __('auth.statusFinally');
+                                                                        $href = "javascript:void(0)";
+                                                                        $target = "";
+                                                                        $class = "btn btn-default btn-rounded";
+                                                                    }
+                                                                    else{
+                                                                        $text = __('auth.btnEndRegistration');
+                                                                        $href = "http://signup.nikkenlatam.com/preinscripcion/retomar/" . base64_encode($row->E_Mail) . "/profile/ch/$language";
+                                                                        $target = "target='_new'";
+                                                                        $class = "btn btn-info btn-rounded";
+                                                                    }
+                                                                }
+                                                                else{
+                                                                    if($assocStatus[3] == 'CHL'){
+                                                                        if($patStatus == 1){
+                                                                            if($assocStatus[1] == 1){
+                                                                                $patRestoGenealogia = 1;
+                                                                                $text = __('auth.statusFinally');
+                                                                                $href = "javascript:void(0)";
+                                                                                $target = "";
+                                                                                $class = "btn btn-default btn-rounded";
+                                                                            }
+                                                                            else{
+                                                                                $text = __('auth.btnEndRegistration');
+                                                                                $href = "http://signup.nikkenlatam.com/preinscripcion/retomar/" . base64_encode($row->E_Mail) . "/profile/ch/$language";
+                                                                                $target = "target='_new'";
+                                                                                $class = "btn btn-info btn-rounded";
+                                                                            }
+                                                                        }
+                                                                        else{
+                                                                            $text = __('auth.statusPat');
+                                                                            $href = "javascript:void(0)";
+                                                                            $target = "";
+                                                                            $class = "btn btn-default btn-rounded";
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else{
+                                                                $patRegistred = explode('-', $curAssocInfo[0]);
+                                                                if($patRegistred[1] == 1){
+                                                                    if($assocStatus[1] == 1){
+                                                                        $href = "javascript:void(0)";
+                                                                        $text = __('auth.statusFinally');
+                                                                        $target = "";
+                                                                        $class = "btn btn-default btn-rounded";
+                                                                    }
+                                                                    else{
+                                                                        $href = "javascript:void(0)";
+                                                                        $text = __('auth.statusNot');
+                                                                        $target = "";
+                                                                        $class = "btn btn-default btn-rounded";
+                                                                    }
+                                                                }
+                                                                else{
+                                                                    $href = "javascript:void(0)";
+                                                                    $text = __('auth.statusPat');
+                                                                    $target = "";
+                                                                    $class = "btn btn-default btn-rounded";
+                                                                }
+                                                            }
+                                                        }
                                                     @endphp
                                                     <tr>
                                                         <td>{{ $num }}</td>
@@ -115,14 +200,15 @@
                                                         <td>{{ $row->Phone1 }}</td>
                                                         <td class="text-center">
                                                             <p style="width: 200px">
-                                                                <a type="button" class="btn btn-info btn-rounded" href="http://127.0.0.1:8000/preinscripcion/retomar/profile/ch/spa/{{ base64_encode($row->E_Mail) }}" target="_new">
-                                                                    {{ __('auth.btnEndRegistration') }}
+                                                                <a type='button' class='{{ $class }}' href='{{ $href }}' {{ $target }} >
+                                                                    {{ $text }}  {{ $assocStatus[4] }}
                                                                 </a>
                                                             </p>
                                                         </td>
                                                     </tr>
                                                     @php
                                                         $num++;
+                                                        $data++;
                                                     @endphp
                                                 @endforeach
                                             </tbody>

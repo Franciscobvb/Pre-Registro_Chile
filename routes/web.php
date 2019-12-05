@@ -9,6 +9,7 @@ Route::post('profile/{country}/{language}/loginprocess/', 'preregistro@Loginproc
 Route::get('/profile/{country}/{language}/pdf/', 'preregistro@pdf');
 Route::get('/profile/{country}/{language}/sponsors/', 'preregistro@getSponsors');
 Route::get('/profile/{country}/{language}/validaSponsor/', 'preregistro@validarSponsor');
+Route::get('/profile/{country}/{language}/recoveracount', 'preregistro@recoverAcount');
 
 /// TEST ///
 

@@ -401,3 +401,32 @@ function hidealeatorio(){
     $("#sponsorRandoom").hide();
     $("#sponsorRandoomLabel").hide();
 }
+
+function submitRecoverPass(){
+    $("#msgvalidating").show();
+    var email = $("#forgotAcountMail").val();
+    document.getElementById("recoverPassBTN").disabled = true;
+    var data = { email: email };
+    $.ajax({
+        type: 'get',
+        url: URLactual + '/recoveracount',
+        data: data,
+        success: function(Response) {
+            if(Response == 'success'){
+                $("#forgotAcountMail").val('');
+                $("#forgotAcountForm").hide();
+                document.getElementById("recoverPassBTN").disabled = false;
+                alertMailSend();
+            }
+            else{
+                alerEmailNotFound();
+                document.getElementById("recoverPassBTN").disabled = false;
+            }
+        }
+    }).fail( function() {
+        alerEmailNotFound();
+        document.getElementById("recoverPassBTN").disabled = false;
+    });
+    $("#msgvalidating").hide();
+    document.getElementById("recoverPassBTN").disabled = false;
+}

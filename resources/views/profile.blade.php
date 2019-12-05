@@ -21,6 +21,8 @@
         <link href="{{asset('regchileasset/plugins/sweetalerts/sweetalert.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{asset('regchileasset/css/ui-kit/custom-sweetalert.css')}}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="{{asset('regchileasset/plugins/loaders/csspin.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{asset('regchileasset/plugins/loaders/custom-loader.css')}}" rel="stylesheet" type="text/css" />
         <style>
             .row [class*="col-"] .widget .widget-header h4 { color: green; }
             input[type=number]::-webkit-inner-spin-button, 
@@ -64,16 +66,16 @@
                         </ol>
                     </div>
                 </div>
-                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert" hidden="">
                     {{ __('auth.alert') }}
                 </div>
-                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert">
+                <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert" hidden="">
                     {{ __('auth.rquired') }}
                 </div>
                 <div class="alert alert-info col-md-12 text-justify" role="alert" id="confirmationAltert" style="display: none">
                     {{ __('auth.alertConfirmation') }} <br><br> {{ __('auth.alertConfirmation2') }}
                 </div>
-                <form id="formProfile" class="form-control" border="none" method="get">
+                <form id="formProfile" class="form-control" border="none" method="get" hidden="">
                     <input type="hidden" id="_token" name="_token" value="{{ csrf_token() }}">
                     <div class="col-lg-12">
                         <div class="statbox widget box box-shadow">
@@ -278,9 +280,29 @@
                                 <div class="form-goup col-md-12">
                                     <br>
                                     <button type="button" class="btn btn-info" id="loginButton" onclick="login()">{{ __('auth.loginButton') }}</button>
+                                    <button type="button" class="btn btn-info" onclick="rescuePass()">{{ __('auth.btnForgotPass') }}</button>
+                                </div> 
+                            </div>
+                            <div class="col-md-6" id="forgotAcountForm">
+                                <div class="form-goup col-md-12">
+                                    <label for="forgotAcountMail"><span style="color: red !important;">*</span> <b>{{ __('auth.labelFmail') }}</b></label>
+                                    <input type="text" id="forgotAcountMail" name="forgotAcountMail" class="form-control">
+                                </div>
+                                <div class="form-goup col-md-12">
+                                    <br>
+                                    <button type="button" class="btn btn-info" onclick="submitRecoverPass()" id="recoverPassBTN">{{ __('auth.btnRecoverPass') }}</button>
+                                    <input type="hidden" id="alertAcountError" name="alertAcountError" class="form-control" value="{{ __('auth.alertAcountError') }}">
+                                    <input type="hidden" id="alertAcountRecovered" name="alertAcountRecovered" class="form-control" value="{{ __('auth.alertAcountRecovered') }}">
+                                    <label id="msgvalidating"><b>{{ __('auth.lavelFpassMessage') }}...</b></label>
                                 </div>
                             </div>
-                            <hr>
+                            <hr><br><br>
+                            <div class="alert alert-info col-md-12 text-justify" role="alert" id="profileAltert" >
+                                {{ __('auth.labelRegister1') }}
+                                <a href="http://signup.nikkenlatam.com/">
+                                    {{ __('auth.labelRegister2') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -307,6 +329,8 @@
         var loginErrortext = $('#loginError').val();
         var alertSponsorIdtext = $('#alertSponsorId').val();
         var alertMailInvalid = $('#alertMailInvalid').val();
+        var alertAcountError = $("#alertAcountError").val();
+        var alertAcountRecovered = $("#alertAcountRecovered").val();
 
         function alertErroMailFormat(){
             swal({
@@ -357,5 +381,41 @@
                 padding: '2em'
             })
         }
+
+        $("#forgotAcountForm").hide();
+        $("#msgvalidating").hide();
+
+        function rescuePass(){
+            $("#forgotAcountForm").show(1000);
+        }
+
+        function alerEmailNotFound(){
+            swal({
+                title: 'Error',
+                text: alertAcountError,
+                type: 'error',
+                padding: '2em'
+            })
+        }
+
+        function alertMailSend(){
+            swal({
+                title: 'OK',
+                text: alertAcountRecovered,
+                type: 'success',
+                padding: '2em'
+            })
+        }
     </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153532047-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-153532047-1');
+    </script>
+
 </html>

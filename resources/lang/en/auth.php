@@ -33,7 +33,7 @@ return [
     'loginButton' => 'Log-in',
     'loginNameLabel' => 'User: ',
     'loginPassLabel' => 'Password: ',
-    'loginAlert' => 'To see your pre-registrations, enter your wellness consultant code and password that you received by email.',
+    'loginAlert' => 'To finish your pre-registration, enter your wellness consultant code and password that you received by email.',
     'rquired' => 'Fields marked with * are required for pre-registration.',
     'alertMailsMatchError' => "The emails dont match",
     'alertDuplicateMail' => 'You cannot register the same email twice',
@@ -63,5 +63,17 @@ return [
     'labelWithOutSponsor' => "ASSIGN RANDOM SPONSOR",
     'alertErrorReg' => 'Registration failed, please try again.',
     'btnEndRegistration' => 'End Registration',
-    'tabLevel' => 'Depth level'
+    'tabLevel' => 'Depth level',
+    'statusNot' => 'Registration is not finished',
+    'statusFinally' => 'Registration completed',
+    'statusPat'=> 'Unregistered sponsor',
+    'labelRegister1' => "The pre-registration page now is closed. If you didn't your pre-signup, you can do the full registration doing",
+    'labelRegister2' => 'Click Here.',
+    'statusPay'=> 'End payment',
+    'btnForgotPass' => 'Forgot Password',
+    'labelFmail' => 'registered mail: ',
+    'btnRecoverPass' => 'Recover acount',
+    'lavelFpassMessage' => 'Validating',
+    'alertAcountError' => 'Mail not found',
+    'alertAcountRecovered' => 'The credentials have been sent to your email'
 ];
